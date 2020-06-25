@@ -1,0 +1,88 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Jun 24 23:22:48 2020
+
+@author: usuario
+"""
+
+from numpy import random
+from scipy import stats
+import numpy as np
+
+print(" Pregunta 2 ")
+import  csv
+valores=[]#Aqui estara todo
+titulos=[]# nombres de las columnas
+talla=[]# todas las tallas.
+tallaH=[]# tallas de hombres
+tallaM=[]# Talllas de mujeres.
+pesos=[]
+pesosH=[]
+pesosM=[]
+talla41y42=[]# tallas de los niños nacidos en 41 y 42 semanas.
+talla40=[]# tallas de los niños nacidos en 40 semanas.
+b=0
+with open("NAC_2017.csv", newline="") as File:
+    reader=csv.reader(File)
+   
+    for row in reader:
+        titulos=(row)#Todos los titulos que aparecen en el excel
+        break
+    for row in reader:
+        valores.append(row)#para leer valores 
+        b=b+1
+        if b==20001:
+            break
+
+medpob=0
+for i in valores:
+    for j in i:
+        af=(j.split(";"))      
+        talla.append(int(af[9]))#se agregan todas las tallas a una lista
+        medpob=medpob+int(af[9])
+        if int(af[0])== 1:
+            tallaH.append(int(af[9]))# se agregan las tallas solo de los hombres
+        if int(af[0])== 2:
+            tallaM.append(int(af[9]))# se agregan las tallas solo de las mujeres.
+        
+        pesos.append(int(af[8]))# se hace lo mismo que arriba pero con el peso.
+        if int(af[0])== 1:
+            pesosH.append(int(af[8]))
+        if int(af[0])== 2:
+            pesosM.append(int(af[8]))
+            
+        
+        if int(af[7])== 41 or 42:
+            talla41y42.append(int(af[9]))
+        if int(af[7])== 40:
+            talla40.append(int(af[9]))
+media_pobl=medpob/len(talla)
+
+#AQUI comienza pregunta 2 A.
+#Con lo siguente se crearan muestras aleatorias de 2000 numeros, 10 veces cada muestra y se guaradara en una lista cada muestra.
+#estimacion=[]#esta lista obtendra todas las muestras aleatorias.
+ae=0
+xd=0
+while ae<10:
+    muestra_ale=[]# aqui se guaradara cada valor de la muestra aleatoria.
+    ai=0
+    n1=len(talla)
+    
+    while ai<2000:
+        bc = random.randint(0,n1)     
+        muestra_ale.append(talla[bc])
+        talla.pop(bc)
+        ai=ai+1
+        n1=n1-1
+    ae=ae+1
+    mean, sigma = np.mean(muestra_ale), np.std(muestra_ale)
+
+    conf_inte = stats.norm.interval(0.90, loc=mean, 
+        scale=sigma / np.sqrt(len(muestra_ale)))
+    #print(conf_inte) 
+    if media_pobl<(max(conf_inte)) and media_pobl>(min(conf_inte)):
+        xd=xd+1
+    #estimacion.append(muestra_ale)    
+print(media_pobl)
+print(xd*10,"%")
