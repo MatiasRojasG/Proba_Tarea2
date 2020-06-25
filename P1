@@ -1,0 +1,99 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Jun 24 18:56:41 2020
+
+@author: usuario
+"""
+
+import scipy.stats as st
+
+
+print("Pregunta 1")  
+        
+
+
+
+#a)
+print("a)")
+u=st.uniform(0,1)
+muestras=u.rvs(40)
+fdp=u.cdf(muestras)
+#Calculo la media
+mediaa=0
+i=0
+for muestra in muestras:
+    mediaa+=muestra*fdp[i]
+    i+=1
+media=mediaa/(len(muestras))
+
+#Calculo de varianza
+i=0
+suma=0
+val=0
+for muestra in muestras:
+    suma=((muestra-media)**2)*fdp[i]
+    val+=suma
+    i+=1
+var=val/(len(muestras)-1)
+#print(mediaa, val)
+
+N=st.norm(mediaa,val)
+print("La probabilidad de que sea menor a 22 es", N.cdf(22))
+print("")
+
+
+
+
+
+
+#b)
+print("b)")
+uni=st.uniform(0,1)
+def Sumatoria(uniforme, suma0, muestras, totaldis, frecuenciarelativa1, frecuenciarelativa2):
+    for i in range(1,totaldis+1):
+        a=uniforme.rvs(muestras)
+        suma0=0
+        for muestra in a:
+            #print(muestra)
+            suma0+=muestra
+        #print(suma00)
+        if (suma0<=22):
+            #print("MENOR A 22", "Distribucion "+str(i))
+            frecuenciarelativa1+=1
+        else:
+            frecuenciarelativa2+=1
+            #print("MAYOR A 22", i)
+            #print("")
+    return int(frecuenciarelativa1)
+a=(Sumatoria(uni,0, 40, 10000, 0,0))/10000
+print("La frecuencia relativa es igual a "+str(a))
+    
+
+print("")
+
+
+
+
+
+#c
+print("c)")
+print("La probabilidad de que la suma fuera menor a 22 es de "+str(N.cdf(22)))
+print("La frecuencia relativa de sumas menores a 22 para U(0,1) "+str(a))
+print("Las probabilidades tienen un margen diferencial, pero las dos están por sobre el 85% de casos menores a 22")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
