@@ -7,7 +7,7 @@ Created on Wed Jun 24 18:56:41 2020
 """
 
 import scipy.stats as st
-
+import math
 
 print("Pregunta 1")  
         
@@ -17,40 +17,22 @@ print("Pregunta 1")
 #a)
 print("a)")
 u=st.uniform(0,1)
-muestras=u.rvs(40)
-fdp=u.cdf(muestras)
-#Calculo la media
-mediaa=0
-i=0
-for muestra in muestras:
-    mediaa+=muestra*fdp[i]
-    i+=1
-media=mediaa/(len(muestras))
-
-#Calculo de varianza
-i=0
-suma=0
-val=0
-for muestra in muestras:
-    suma=((muestra-media)**2)*fdp[i]
-    val+=suma
-    i+=1
-var=val/(len(muestras)-1)
-#print(mediaa, val)
-
-N=st.norm(mediaa,val)
-print("La probabilidad de que sea menor a 22 es", N.cdf(22))
-print("")
-
-
-
-
+n=40
+media=n/2
+desv=math.sqrt(n/12)
+n=st.norm(media,desv)
+menora22=n.cdf(22)
+print("Según el TCL, n vvaa U(0,1) ")
+print("se aproxima a N(n/2, sqrt(n/12))")
+print("Por lo tanto para un n igual a "+str(40) +" la probabilidad de")
+print("la suma sea menor a 22 es")
+print(menora22)
 
 
 #b)
 print("b)")
 uni=st.uniform(0,1)
-def Sumatoria(uniforme, suma0, muestras, totaldis, frecuenciarelativa1, frecuenciarelativa2):
+def Sum(uniforme, suma0, muestras, totaldis, frecuenciarelativa1, frecuenciarelativa2):
     for i in range(1,totaldis+1):
         a=uniforme.rvs(muestras)
         suma0=0
@@ -66,7 +48,7 @@ def Sumatoria(uniforme, suma0, muestras, totaldis, frecuenciarelativa1, frecuenc
             #print("MAYOR A 22", i)
             #print("")
     return int(frecuenciarelativa1)
-a=(Sumatoria(uni,0, 40, 10000, 0,0))/10000
+a=(Sum(uni,0, 40, 10000, 0,0))/10000
 print("La frecuencia relativa es igual a "+str(a))
     
 
@@ -78,10 +60,9 @@ print("")
 
 #c
 print("c)")
-print("La probabilidad de que la suma fuera menor a 22 es de "+str(N.cdf(22)))
-print("La frecuencia relativa de sumas menores a 22 para U(0,1) "+str(a))
-print("Las probabilidades tienen un margen diferencial, pero las dos están por sobre el 85% de casos menores a 22")
-
+print("La probabilidad de que la suma fuera menor a 22 es de "+str(menora22))
+print("La frecuencia relativa de sumas menores a 22 para U(0,1) es "+str(a))
+print("Las probabilidades son casi idénticas a grandes rasgos")
 
 
 
